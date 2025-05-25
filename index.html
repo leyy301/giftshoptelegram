@@ -293,8 +293,8 @@
         // Jika ingin menggunakan data dari Telegram
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
             const user = tg.initDataUnsafe.user;
-            const avatar = document.querySelector('.avatar');
-            const username = document.querySelector('.user-info h2');
+            const avatar = document.getElementById('user-photo');
+            const username = document.getElementById('user-username');
             
             // Set avatar dengan inisial jika tidak ada foto
             if (user.first_name) {
