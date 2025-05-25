@@ -3,68 +3,312 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Gift Shop</title>
+    <title>Telegram Mini App</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: var(--tg-theme-bg-color, #ffffff);
-            color: var(--tg-theme-text-color, #000000);
+            background-color: #f5f5f5;
+            color: #333;
         }
+        
         .container {
-            padding: 16px;
+            max-width: 100%;
+            padding: 20px;
+            padding-bottom: 70px; /* Untuk memberi ruang menu bawah */
         }
-        .gift-card {
-            border: 1px solid var(--tg-theme-secondary-bg-color, #f0f0f0);
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 12px;
-            background-color: var(--tg-theme-secondary-bg-color, #f9f9f9);
-            text-align: center;
+        
+        .page {
+            display: none;
         }
-        .gift-image {
-            width: 120px;
-            height: 120px;
-            object-fit: contain;
-            border-radius: 8px;
-            margin: 0 auto;
+        
+        .page.active {
             display: block;
         }
-        .gift-title {
-            font-weight: 500;
-            margin: 8px 0;
-        }
-        .gift-price {
-            font-weight: bold;
-            color: var(--tg-theme-link-color, #2481cc);
-        }
-        .send-gift {
-            background-color: var(--tg-theme-button-color, #50a8eb);
-            color: var(--tg-theme-button-text-color, #ffffff);
-            border: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            margin-top: 8px;
-            cursor: pointer;
-            width: 100%;
-        }
-        .header {
-            text-align: center;
+        
+        h1 {
+            font-size: 24px;
             margin-bottom: 20px;
+        }
+        
+        .bottom-menu {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 12px;
+            padding: 5px 10px;
+        }
+        
+        .menu-item.active {
+            color: #0088cc;
+        }
+        
+        .menu-icon {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        
+        .card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #0088cc;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: 15px;
+        }
+        
+        .user-info h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+        
+        .user-info p {
+            margin: 5px 0 0;
+            color: #666;
+        }
+        
+        .ranking-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .rank {
+            font-weight: bold;
+            width: 30px;
+            text-align: center;
+        }
+        
+        .product {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+        }
+        
+        .product-image {
+            width: 60px;
+            height: 60px;
+            background-color: #eee;
+            border-radius: 8px;
+            margin-right: 15px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>Telegram Gift Shop</h1>
-            <p>Send special gifts to your friends</p>
+        <!-- Halaman Home -->
+        <div id="home" class="page active">
+            <h1>Selamat Datang</h1>
+            <div class="card">
+                <p>Selamat datang di Mini App Telegram kami. Gunakan menu di bawah untuk menjelajahi fitur-fitur yang tersedia.</p>
+            </div>
+            <div class="card">
+                <h3>Berita Terbaru</h3>
+                <p>Fitur terbaru telah ditambahkan ke dalam aplikasi. Cek sekarang!</p>
+            </div>
         </div>
-        <div id="gifts-list"></div>
+        
+        <!-- Halaman Peringkat -->
+        <div id="peringkat" class="page">
+            <h1>Peringkat Pengguna</h1>
+            <div class="card">
+                <div class="ranking-item">
+                    <div class="rank">1</div>
+                    <div class="user-info">
+                        <strong>User A</strong>
+                        <p>1000 Poin</p>
+                    </div>
+                </div>
+                <div class="ranking-item">
+                    <div class="rank">2</div>
+                    <div class="user-info">
+                        <strong>User B</strong>
+                        <p>850 Poin</p>
+                    </div>
+                </div>
+                <div class="ranking-item">
+                    <div class="rank">3</div>
+                    <div class="user-info">
+                        <strong>User C</strong>
+                        <p>700 Poin</p>
+                    </div>
+                </div>
+                <div class="ranking-item">
+                    <div class="rank">4</div>
+                    <div class="user-info">
+                        <strong>User D</strong>
+                        <p>600 Poin</p>
+                    </div>
+                </div>
+                <div class="ranking-item">
+                    <div class="rank">5</div>
+                    <div class="user-info">
+                        <strong>User E</strong>
+                        <p>550 Poin</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Halaman Marketplace -->
+        <div id="marketplace" class="page">
+            <h1>Marketplace</h1>
+            <div class="card">
+                <div class="product">
+                    <div class="product-image"></div>
+                    <div>
+                        <strong>Produk 1</strong>
+                        <p>Rp 100.000</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="product">
+                    <div class="product-image"></div>
+                    <div>
+                        <strong>Produk 2</strong>
+                        <p>Rp 150.000</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="product">
+                    <div class="product-image"></div>
+                    <div>
+                        <strong>Produk 3</strong>
+                        <p>Rp 200.000</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Halaman Profil -->
+        <div id="profil" class="page">
+            <h1>Profil Pengguna</h1>
+            <div class="card">
+                <div class="user-profile">
+                    <div class="avatar">U</div>
+                    <div class="user-info">
+                        <h2>Username</h2>
+                        <p>Member sejak Januari 2023</p>
+                    </div>
+                </div>
+                <div>
+                    <h3>Informasi Akun</h3>
+                    <p><strong>Email:</strong> user@example.com</p>
+                    <p><strong>Telepon:</strong> +628123456789</p>
+                    <p><strong>Poin:</strong> 500</p>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Pengaturan</h3>
+                <p>Notifikasi</p>
+                <p>Privasi</p>
+                <p>Bantuan</p>
+            </div>
+        </div>
     </div>
     
-    <script src="app.js"></script>
+    <!-- Menu Bawah -->
+    <div class="bottom-menu">
+        <a href="#" class="menu-item active" onclick="showPage('home')">
+            <div class="menu-icon">🏠</div>
+            <div>Home</div>
+        </a>
+        <a href="#" class="menu-item" onclick="showPage('peringkat')">
+            <div class="menu-icon">🏆</div>
+            <div>Peringkat</div>
+        </a>
+        <a href="#" class="menu-item" onclick="showPage('marketplace')">
+            <div class="menu-icon">🛒</div>
+            <div>Marketplace</div>
+        </a>
+        <a href="#" class="menu-item" onclick="showPage('profil')">
+            <div class="menu-icon">👤</div>
+            <div>Profil</div>
+        </a>
+    </div>
+    
+    <script>
+        // Inisialisasi Telegram WebApp
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        
+        // Fungsi untuk menampilkan halaman tertentu
+        function showPage(pageId) {
+            // Sembunyikan semua halaman
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Tampilkan halaman yang dipilih
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update menu aktif
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // Scroll ke atas
+            window.scrollTo(0, 0);
+        }
+        
+        // Jika ingin menggunakan data dari Telegram
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            const user = tg.initDataUnsafe.user;
+            const avatar = document.querySelector('.avatar');
+            const username = document.querySelector('.user-info h2');
+            
+            // Set avatar dengan inisial jika tidak ada foto
+            if (user.first_name) {
+                avatar.textContent = user.first_name.charAt(0);
+                if (user.last_name) {
+                    avatar.textContent += user.last_name.charAt(0);
+                }
+            }
+            
+            // Set username
+            if (username) {
+                username.textContent = user.first_name || 'Pengguna';
+            }
+        }
+    </script>
 </body>
 </html>
